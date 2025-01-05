@@ -1,0 +1,170 @@
+/* General Page Styling */
+.candidate-form-page {
+    display:block;
+    height: 100vh;
+    background-color: #f0f2f5;
+    font-family: 'Roboto', sans-serif;
+    overflow: scroll;
+}
+
+#cfh2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5023a9;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    width: calc(100% - 580px); /* Full width minus sidebar */
+    top: 0px;
+    left: 400px;
+    z-index: 99;
+}
+
+/* Form Styling */
+.candidate-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px; 
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    /* align-items: center; */
+    margin: 0 auto;
+    padding: 40px 40px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.candidate-form-container {
+    background-color: #f0f2f5;
+    text-align: left;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    left: 125px;
+}
+
+.candidate-form label {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+}
+
+.candidate-form input,
+.candidate-form select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.candidate-form textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    resize: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.candidate-form input:focus,
+.candidate-form select:focus,
+.candidate-form textarea:focus {
+    border-color: #5023a9;
+    box-shadow: 0 0 5px rgba(80, 35, 169, 0.3);
+    outline: none;
+}
+
+.candidate-form button {
+    padding: 12px 18px;
+    background-color: #4a3b6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.candidate-form button:hover,
+.candidate-form button:focus {
+    background-color: #36a13d;
+    transform: translateY(-2px);
+}
+
+.candidate-form button:active {
+    transform: translateY(1px);
+}
+
+/* Scrollbar Customization */
+.main-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background-color: #c6c6c6;
+    border-radius: 6px;
+    border: 2px solid #f0f0f0;
+}
+
+/* Active Link Styling */
+.sidebar ul li a.active-link {
+    background-color: #5a3b8d;
+    color: #f0f0f0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 180px;
+    }
+    .main-content {
+        margin-left: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 160px;
+    }
+    .main-content {
+        margin-left: 160px;
+    }
+
+    .candidate-form {
+        width: 90%;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 140px;
+    }
+    .main-content {
+        margin-left: 140px;
+    }
+
+    .candidate-form {
+        width: 95%;
+    }
+}

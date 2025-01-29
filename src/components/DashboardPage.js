@@ -15,6 +15,11 @@ const DashboardPage = ({ interns = [] }) => { // Default to an empty array
         return <div>Loading...</div>;
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString(); // Customize date format as needed
+    };
+
     return (
         <div className="dashboard-page">
             <h1>{internDetails.name}'s Profile</h1>
@@ -23,7 +28,13 @@ const DashboardPage = ({ interns = [] }) => { // Default to an empty array
                     <tbody>
                         <tr>
                             <td><strong>Profile Picture:</strong></td>
-                            <td><img src={`/images/${internDetails.photo}`} alt={internDetails.name} className="profile-pic" /></td>
+                            <td>
+                                {internDetails.photo ? (
+                                    <img src={`/images/${internDetails.photo}`} alt={internDetails.name} className="profile-pic" />
+                                ) : (
+                                    <span>No Profile Picture Available</span>
+                                )}
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Year of Passing:</strong></td>
@@ -51,7 +62,13 @@ const DashboardPage = ({ interns = [] }) => { // Default to an empty array
                         </tr>
                         <tr>
                             <td><strong>Resume:</strong></td>
-                            <td><a href={`/resumes/${internDetails.resumeUpload}`} target="_blank" rel="noopener noreferrer">Download</a></td>
+                            <td>
+                                {internDetails.resumeUpload ? (
+                                    <a href={`/resumes/${internDetails.resumeUpload}`} target="_blank" rel="noopener noreferrer">Download</a>
+                                ) : (
+                                    <span>No Resume Available</span>
+                                )}
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Designation:</strong></td>
@@ -59,7 +76,7 @@ const DashboardPage = ({ interns = [] }) => { // Default to an empty array
                         </tr>
                         <tr>
                             <td><strong>Date of Interview:</strong></td>
-                            <td>{internDetails.dateOfInterview}</td>
+                            <td>{formatDate(internDetails.dateOfInterview)}</td>
                         </tr>
                         <tr>
                             <td><strong>Selection Status:</strong></td>
@@ -67,7 +84,7 @@ const DashboardPage = ({ interns = [] }) => { // Default to an empty array
                         </tr>
                         <tr>
                             <td><strong>Date of Joining:</strong></td>
-                            <td>{internDetails.dateOfJoining}</td>
+                            <td>{formatDate(internDetails.dateOfJoining)}</td>
                         </tr>
                         <tr>
                             <td><strong>Working Status:</strong></td>

@@ -1,58 +1,67 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Intern = require('./models/Intern'); // Import the model
-const Busboy = require('busboy');
-const fs = require('fs'); // To handle file system operations
-const path = require('path'); // For file path handling
-const dbConn = require('./db');
+const Intern = require('./models/Intern');
+const fs = require('fs');
+const path = require('path');
 const connectDb = require('./db');
+const busboy = require('connect-busboy');
 
 const app = express();
-app.use(express.json()); // To parse JSON requests
+app.use(express.json());
+app.use(busboy({ immediate: true }));  // Initialize busboy middleware immediately
 
-// Create a new intern
 app.post('/add-intern', (req, res) => {
-    const busboy = Busboy({ headers: req.headers });
     const internData = {};
-    
-    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-        const filePath = path.join(__dirname, 'uploads', filename); // Change this as needed
-        file.pipe(fs.createWriteStream(filePath));
-        internData[fieldname] = filePath; // Save the file path in internData
+
+    if (!req.busboy) {
+        return res.status(400).send('Busboy not initialized');
+    }
+
+    req.busboy.on('file', (fieldname, file, filename) => {
+        if (!filename) {
+            return res.status(400).send('No file uploaded');
+        }
+
+        const filePath = path.join(__dirname, 'uploads', filename);
+        const fstream = fs.createWriteStream(filePath);
+
+        file.pipe(fstream);
+
+        fstream.on('close', () => {
+            internData[fieldname] = filePath;
+        });
+
+        fstream.on('error', (err) => {
+            console.error('File stream error:', err);
+            return res.status(500).send('File upload failed');
+        });
     });
 
-    busboy.on('field', (fieldname, val) => {
-        internData[fieldname] = val; // Save field data
+    req.busboy.on('field', (fieldname, val) => {
+        internData[fieldname] = val;
     });
 
-    busboy.on('finish', async () => {
+    req.busboy.on('finish', async () => {
+        if (!internData.resume) {
+            return res.status(400).send('File upload failed');
+        }
         try {
             const intern = new Intern(internData);
             await intern.save();
-            res.status(201).send(intern);
+            res.status(201).json(intern);
         } catch (error) {
-            res.status(400).send(error);
+            res.status(400).send({ error: error.message });
         }
     });
 
-    req.pipe(busboy);
-});
-
-// Get all active interns in a specific team (T&P, PS, Special Lab)
-app.get('/active-interns/:team', async (req, res) => {
-    try {
-        const team = req.params.team;
-        const interns = await Intern.find({ team, workingStatus: 'Working' });
-        res.status(200).send(interns);
-    } catch (error) {
-        res.status(500).send(error);
-    }
+    req.pipe(req.busboy);
 });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/ICD', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(5000, () => { 
-        console.log('Server running on port 5000')
-        dbConn,connectDb()
-    }))
-    .catch(err => console.error(err));
+mongoose.connect('mongodb://127.0.0.1:27017/ICD', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => app.listen(5000, () => {
+    console.log('Server running on port 5000');
+    connectDb();  // Call the db connection method
+})).catch(err => console.error(err));

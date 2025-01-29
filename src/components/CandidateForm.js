@@ -30,7 +30,6 @@ const CandidateForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('id', candidate.id);
         formData.append('name', candidate.name);
@@ -55,7 +54,6 @@ const CandidateForm = () => {
                 method: 'POST',
                 body: formData,
             });
-
             if (response.ok) {
                 const result = await response.json();
                 console.log('Candidate added:', result);

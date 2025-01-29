@@ -49,7 +49,7 @@ const internSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dateOfInterview: {
+    interviewDate: {
         type: String, // You can also use `Date` type for actual date handling
         required: true
     },
@@ -58,7 +58,7 @@ const internSchema = new mongoose.Schema({
         enum: ['Selected', 'Unselected'],
         required: true
     },
-    dateOfJoining: {
+    joiningDate: {
         type: String, // You can also use `Date`
         required: true
     },
